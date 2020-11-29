@@ -1,0 +1,16 @@
+a, a > code {
+  color: rgb(87, 130, 178);
+  text-decoration: none;
+}
+
+h1 {
+  color: #447099;
+}
+h2 {
+  color: #447099;
+}
+.inverse {
+  background-color: #447099;
+  color: #d6d6d6;
+  text-shadow: 0 0 0px #333;
+}
