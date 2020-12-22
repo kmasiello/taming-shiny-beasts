@@ -42,6 +42,7 @@ class: center, middle
 # Shiny, I love you, but...
 
 ---
+name: how it's going
 class: inverse
 .pull-left[
 # How it started...
@@ -52,14 +53,18 @@ class: inverse
 # How it's going
 ![](slides_files/beast.png)
 ]
----
 
-.left-column[
-<h2 style="font-size:30vw; line-height: 80%;margin-bottom: 0;">7</h2><h2 style="font-size:10vw; line-height: 80%;margin: 0;">signs it's time to break up</h2>
+???
+Often we start with a Shiny app that is a great fit for a problem.  But over time, often the app evolves. It can grow in complexity, or be tested to its limits as it becomes business critical. The care and feeding of the app can become burdensome.
+---
+name: signs it's time to break up
+.left-column-impact[
+<h6 > 7</h6>
+<h7>signs it's time to break up</h7>
 ]
 
 .right-column[
-<br><br><br>
+<br><br><br><br>
 1. It's a monolith
 
 1. Updating is scary / hard
@@ -87,36 +92,64 @@ knitr::include_graphics("slides_files/monolith.png")
 ```{r  out.width = "90%", echo=FALSE, eval=TRUE, fig.align='center'}
 knitr::include_graphics("slides_files/microservices.png")
 ```
+
 ---
+class: inverse, middle
+
+
+.left[###The Single Responsibility Principle]
+.center[# “Gather together those things that change for the same reason, and separate those things that change for different reasons.”]
+.right[###&ndash; Robert C. Martin]
+
+
+---
+name: patterns to break up
 class: inverse 
-.left-column[
-<h2 style="font-size:30vw; line-height: 80%;margin-bottom: 0;">4</h2><h2 style="font-size:10vw; line-height: 80%;margin: 0;">Patterns to break up big apps</h2>
+
+.left-column-impact[
+<h6 style="color:#FFFFFF"> 4</h6>
+<h7>Patterns to break up big apps</h7>
 ]
 
 .right-column[
 <br>
-###1. APIs &nbsp;<img src="slides_files/plumber_small.png" height="90" style="vertical-align:middle">
+###1. Write a  &nbsp; <img src="slides_files/pkg.png" height="90" style="vertical-align:middle">
 
-###2. Write a  &nbsp; <img src="slides_files/pkgdown.png" height="90" style="vertical-align:middle">
+###2. APIs &nbsp;<img src="slides_files/plumber_small.png" height="90" style="vertical-align:middle">
 
 ###3. Use &nbsp; <img src="slides_files/shiny.png" height="90" style="vertical-align:middle">&nbsp; modules
 
 ###4. Write an &nbsp; <img src="slides_files/R6.png" height="90" style="vertical-align:middle">&nbsp; Class 
 
 ]
+---
+name: why/when packages
+# The Case for Packages &nbsp; <img src="slides_files/pkgdown.png" height="90" style="vertical-align:middle">
+.pull-left[
+* One package per project (aka the helpR package)
 
+* Project-level reliability
+  * Unit testing! <img src="slides_files/testthat.png" height="60" style="vertical-align:middle">
+
+* Team-wide collaboration
+  * Analytics
+  * Plotting
+  * Templates
+  * Data Access
+
+
+
+]
+.pull-right[
+![](slides_files/packagestructure.png)
+]
 ---
 class: inverse, center, middle
-# “Gather together those things that change for the same reason, and separate those things that change for different reasons.”
----
-class: inverse, center, middle
-# Okay, but how?
----
-class: inverse, center, middle
-# APIs, that's how.
----
-class: inverse, center, middle
-# AP-who?
+# But what if your analytics need to be shared outside of the R-ecosystem?
+--
+<br>
+<img src="slides_files/hello.png" height="300" style="vertical-align:middle">
+
 ---
 # TL;DR - APIs
 
@@ -129,17 +162,30 @@ class: inverse, center, middle
 * Think of HTTP as a universal language
 
 ---
-# Conceptualizing APIs
+# Think of APIs as a way to access a function
+General form of an API: 
+```
+http://hostname/api_endpoint/?parameter=value
+```
 
-* Think of an API like a function  
+Example function:
+```{r}
+my_function <- function(argument) {
+  some_kind_of_operation(argument)
+}
+```
 
-* Functions have arguments and do something 
+As an API: 
+```
+http://hostname/my_function/?argument=value
+```
+ 
+---
+# Think of APIs as a universal adapter
 
-* APIs have parameters and do something
-
-* `function(argument = value)`
-
-* `http://hostname:8888/api_endpoint/?parameter=value`
+.center[<img src="slides_files/dockingstation.png" height = 325>] 
+  
+.center[<img src="slides_files/dockingstationDescription.png" width = 300%> ]
 
 ---
 # Data Science Tool Box
@@ -675,6 +721,9 @@ class: inverse, middle, center
 * Reduce communication barriers
  
 * Enable programmatic use of tools
+
+---
+To wrap up, showbarebones shiny app with all logic built into it vs shiny app that just calls the API
 
 ---
 class: inverse, middle, center

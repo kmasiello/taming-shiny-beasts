@@ -1,0 +1,48 @@
+a, a > code {
+  color: rgb(87, 130, 178);
+  text-decoration: none;
+}
+
+h1 {
+  color: #447099;
+}
+h2 {
+  color: #447099;
+}
+.inverse {
+  background-color: #447099;
+  color: #d6d6d6;
+  text-shadow: 0 0 0px #333;
+}
+
+.inverse h1, .inverse h2, .inverse h3 {
+  color: #f3f3f3;
+}
+
+h6 {
+  font-weight: normal;
+  color: #447099;
+  font-size: 150px;
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 100%;
+  font-family: "Yanone Kaffeesatz";
+
+}
+
+h7 {
+  color: #000000;
+  font-size: 50px;
+  line-height: 90%;
+  margin-top: 0;
+  font-family: "Yanone Kaffeesatz";
+}
+
+.left-column-impact {
+  color: #777;
+  width: 20%;
+  height: 92%;
+  float: left;
+  vertical-align: middle;
+  transform: translateY(25%);
+}

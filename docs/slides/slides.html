@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Taming the Shiny beast</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Katie Masiello, Josiah Parry, Alex Gold" />
+    <script src="slides_files/header-attrs-2.5/header-attrs.js"></script>
+    <link href="slides_files/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="slides_files/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link href="slides_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+    <script src="slides_files/anchor-sections-1.0/anchor-sections.js"></script>
+    <script src="slides_files/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="slides_files/shareon-1.4.1/shareon.min.css" rel="stylesheet" />
+    <script src="slides_files/shareon-1.4.1/shareon.min.js"></script>
+    <link href="slides_files/xaringanExtra-shareagain-0.2.3/shareagain.css" rel="stylesheet" />
+    <script src="slides_files/xaringanExtra-shareagain-0.2.3/shareagain.js"></script>
+    <link rel="stylesheet" href="custom2.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+layout: true
+background-image: url(slides_files/RStudio-Logo-Flat.png)
+background-position: 2% 98%
+background-size: 10%
+---
+name: title
+class: inverse, center, middle
+# Taming the Shiny beast
+### Katie Masiello, Josiah Parry, Alex Gold
+
+
+---
+
+
+
+class: center, middle  
+
+# Shiny, I love you, but...
+
+---
+class: inverse
+.pull-left[
+# How it started...
+![](slides_files/babybear.png)
+] 
+--
+.pull-right[
+# How it's going
+![](slides_files/beast.png)
+]
+---
+
+.left-column-impact[
+&lt;h6 &gt; 7&lt;/h6&gt;
+&lt;h7&gt;signs it's time to break up&lt;/h7&gt;
+]
+
+.right-column[
+&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+1. It's a monolith
+
+1. Updating is scary / hard
+
+1. The idea of handing it off or inheriting it is terrifying
+
+1. Performance issues
+
+1. Redundant code
+
+1. Other teams want to use your code
+
+1. Other teams or tools don't speak R
+
+]
+
+---
+# Monolith
+&lt;img src="slides_files/monolith.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+# Lean it out
+&lt;img src="slides_files/microservices.png" width="90%" style="display: block; margin: auto;" /&gt;
+
+---
+class: inverse 
+
+.left-column-impact[
+&lt;h6 style="color:#FFFFFF"&gt; 4&lt;/h6&gt;
+&lt;h7&gt;Patterns to break up big apps&lt;/h7&gt;
+]
+
+.right-column[
+&lt;br&gt;
+###1. APIs &amp;nbsp;&lt;img src="slides_files/plumber_small.png" height="90" style="vertical-align:middle"&gt;
+
+###2. Write a  &amp;nbsp; &lt;img src="slides_files/pkgdown.png" height="90" style="vertical-align:middle"&gt;
+
+###3. Use &amp;nbsp; &lt;img src="slides_files/shiny.png" height="90" style="vertical-align:middle"&gt;&amp;nbsp; modules
+
+###4. Write an &amp;nbsp; &lt;img src="slides_files/R6.png" height="90" style="vertical-align:middle"&gt;&amp;nbsp; Class 
+
+]
+---
+# The Case for Packages &amp;nbsp; &lt;img src="slides_files/pkgdown.png" height="90" style="vertical-align:middle"&gt;
+.pull-left[
+* One package per project
+
+* Project-level reliability
+  * Unit testing! &lt;img src="slides_files/testthat.png" height="60" style="vertical-align:middle"&gt;
+
+* Team-wide collaboration
+  * Analytics
+  * Plotting
+  * Templates
+  * Data Access
+
+
+
+]
+.pull-right[
+![](slides_files/packagestructure.png)
+]
+&lt;br&gt;
+*But what if your analytics need to be shared outside of the R-ecosystem?*
+
+---
+class: inverse, center, middle
+# “Gather together those things that change for the same reason, and separate those things that change for different reasons.”
+---
+class: inverse, center, middle
+# Okay, but how?
+---
+class: inverse, center, middle
+# APIs, that's how.
+---
+class: inverse, center, middle
+# AP-who?
+---
+# TL;DR - APIs
+
+* Application Programming Interfaces  
+
+* Machines talking to machines
+
+* RESTful APIs use HTTP
+
+* Think of HTTP as a universal language
+
+---
+# Conceptualizing APIs
+
+* Think of an API like a function  
+
+* Functions have arguments and do something 
+
+* APIs have parameters and do something
+
+* `function(argument = value)`
+
+* `http://hostname:8888/api_endpoint/?parameter=value`
+
+---
+# Data Science Tool Box
+
+* PDF reports
+
+* PowerPoint presentations
+
+* Spreadsheets
+
+* Interactive Dashboards
+
+* *etc.*
+
+* Limited to end user consumption
+
+---
+# Data Science Tool Box
+
+* PDF reports
+
+* PowerPoint presentations
+
+* Spreadsheets
+
+* Interactive Dashboards
+
+* *etc.*
+
+* **~APIs~**
+
+---
+class: inverse, center, middle
+
+# Why an API?
+
+---
+# Organizational
+
+* Smaller pieces are easier to manage (less code!)
+
+* Component Monitoring 
+
+* Infrastructure for recycled code 
+
+* Less technical debt! 
+
+* Better change management
+  * Upgrade one service at a time without bringing down whole application
+
+---
+# Collaborative
+
+* Less friction in tool handoff 
+
+* Empower teams to use preferred tool chain
+
+* Concerned about API requests not software language
+
+* Reduced effort in tool hand off
+
+  * No need to translate work
+  
+  * Not blocked by communication
+
+* Programmatic use of services by other teams
+
+  * Whereas dashboards require user intervention
+
+* **_Glue together API requests! Pipelines, baby!_** 
+
+---
+# Signs you might be ready to create an API
+
+* Redundant code (copying and pasting/reusing)
+
+* Other teams want your code
+
+* Other teams may not know your language
+
+* You want to integrate different software into one toolchain
+
+---
+class: inverse, center, middle
+
+# How do you build an API?
+
+---
+# API frameworks?
+
+* R - plumber
+
+* Python - Flask, Fast API
+
+* JavaScript - Node.js &amp; Express.js
+
+---
+class: inverse, center, middle
+
+# How do you deploy an API?
+
+---
+# Deployment Options
+.pull-left[
+
+* RStudio Connect
+
+* Digital Ocean
+
+* Docker
+]
+.pull-right[
+&lt;img src="slides_files/rsc.png" width="90%" style="display: block; margin: auto 0 auto auto;" /&gt;
+
+&lt;img src="slides_files/digitalocean.png" width="45%" style="display: block; margin: auto 0 auto auto;" /&gt;&lt;img src="slides_files/docker.png" width="45%" style="display: block; margin: auto 0 auto auto;" /&gt;
+]
+---
+class: center, middle
+
+# Why limit your stack to
+![](slides_files/streamlit_small.png)
+![](slides_files/shiny_small.png) ![](slides_files/plotly_small.png)
+
+---
+class: center, middle
+
+# When it could be this
+
+![](slides_files/shiny_small.png)
+![](slides_files/plumber_small.png) &lt;br&gt;
+![](slides_files/plotly_small.png)
+![](slides_files/flask_small.png)
+![](slides_files/streamlit_small.png)
+![](slides_files/nodejs_small.png)
+
+---
+class: inverse, center, middle
+
+# Let's get into it
+
+---
+# Parts of an API
+* **Host (fixed):**  
+  * &lt;span style="background-color:#fff2cc"&gt;`http://api.hostname.io/`&lt;/span&gt;
+
+* **Endpoint:** 
+  * Resource location (think of as a function)
+  * `http://api.hostname.io/`&lt;span style="background-color:#fff2cc"&gt;`end-point`&lt;/span&gt;
+
+* **Parameters (optional):** 
+  * Address varying parts of a request 
+  * `http://api.hostname.io/end-point/`&lt;span style="background-color:#fff2cc"&gt;`?param=value`&lt;/span&gt;
+
+* **Headers &amp; body (optional):** 
+  * (not in URL) Associated (meta)data 
+---
+# API Requests
+* Each API endpoint has a different **method**  
+
+* **GET**
+  * Used to &lt;span style="background-color:#fff2cc"&gt;*retrieve*&lt;/span&gt; data. Parameters only. No body.
+  * Everything is in the URL.
+  * Don’t send sensitive data! 
+  
+* POST
+  * Used for sending data (files or text). More secure.
+  * Creating or modifying something.
+  
+* Other methods:
+  * PUT
+  * DELETE (yikes!)
+  * HEAD
+  * … 
+---
+# APIs as a Maturity Process 
+
+* The one off analysis
+
+* The *what ifs*?
+
+  * Parameterized Rmd
+
+  * Shiny Dashboard
+
+* Need programmatic access  
+
+  * Function
+  
+  * API
+  
+---
+# Example: Global Crop Yields
+.pull-left[
+* [TidyTuesday Week 36, 2020](https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-09-01/readme.md) 
+
+* Goal: 
+  * Fetch crop yields for a given crop, year, and country 
+  
+* Ad hoc analysis 
+
+* Parameterized Rmd
+
+* Function 
+
+* Plumber API
+]
+
+.pull-right[
+![](slides_files/harvester.png)
+]
+---
+# Example: ad hoc analaysis
+
+```r
+library(tidyverse)
+
+crop_yields &lt;- read_csv("data/crop_yields.csv")
+
+# We could filter our data set
+filter(crop_yields,
+      year == 2018,        
+      product == "maize",
+      entity == "cuba")
+
+## # A tibble: 1 x 4
+##   entity  year product crop_yield
+##   &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt;
+## 1 cuba    2018 maize         2.39
+```
+---
+# [Parameterized Rmd](https://colorado.rstudio.com/rsc/connect/#/apps/7597/access/4133)
+&lt;img src="slides_files/parameterized.png" width="100%" style="display: block; margin: auto;" /&gt;
+---
+# Making it functional
+* Functions are code shortcuts!
+
+* Functions are a special kind of object
+
+* Arguments are placeholders
+
+* Whatever is printed last is returned
+
+
+```r
+my_fun &lt;- function(arg) {
+ # do something with the argument
+ arg
+}
+
+my_fun("Hello!")
+```
+
+```
+## [1] "Hello!"
+```
+
+```r
+## [1] "Hello!"
+```
+---
+# What is changing?
+
+* Things that change should be arguments  
+
+&lt;code class ='r hljs remark-code'&gt;filter(crop_yields, &lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;year == &lt;span style='background-color:#ffff7f'&gt;2018&lt;/span&gt;, &lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;product == &lt;span style='background-color:#ffff7f'&gt;"maize"&lt;/span&gt;, &lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;entity == &lt;span style='background-color:#ffff7f'&gt;"cuba"&lt;/span&gt;)&lt;/code&gt;
+
+* Making the skeleton  
+
+&lt;code class ='r hljs remark-code'&gt;filter_yields &lt;- function(&lt;span style='background-color:#ffff7f'&gt;.year&lt;/span&gt;, &lt;span style='background-color:#ffff7f'&gt;.product&lt;/span&gt;, &lt;span style='background-color:#ffff7f'&gt;.entity&lt;/span&gt;) {&lt;br&gt;	&amp;nbsp;# This is where our filtering will go! &lt;br&gt;}&lt;/code&gt;
+
+* Using a '.' to avoid confusion in the `filter()`
+---
+# Example: making it functional
+
+```r
+filter_yields &lt;- function(.year, .product, .entity) {
+
+ filter(crop_yields,
+      year == .year,
+      product == .product,
+      entity == .entity)
+}
+
+filter_yields(2012, "potatoes", "guatemala")
+
+## # A tibble: 1 x 4
+##   entity     year product  crop_yield
+##   &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;         &lt;dbl&gt;
+## 1 guatemala  2012 potatoes       25.0
+```
+
+---
+class: inverse, center, middle
+# You’ve basically made an API already
+
+---
+class: inverse, center, middle
+
+
+
+&lt;h1&gt;&lt;span style='color:tomato'&gt;https://colorado.rstudio.com/rsc/&lt;/span&gt;&lt;span style='color:cornflowerblue'&gt;crop-yield-api/&lt;/span&gt;&lt;span style='color:orange'&gt;crop-yield &lt;/span&gt;&lt;span style='color:darkseagreen'&gt;?.year=1978&amp;.product=cassava&amp;.entity=congo&lt;/span&gt;&lt;/h1&gt;
+
+## &lt;span style="color:tomato"&gt;host/&lt;/span&gt;&lt;span style="color:cornflowerblue"&gt;RSC content path/&lt;/span&gt;&lt;span style="color:orange"&gt;endpoint&lt;/span&gt;&lt;span style="color:darkseagreen"&gt;?parameters&lt;/span&gt;
+---
+# The API
+
+```r
+library(plumber)
+library(tidyverse)
+
+crop_yields &lt;- read_csv("data/crop_yields.csv")
+
+#* @apiTitle Crop Yields API
+#* Return crop yields for a given product, year, and entity.
+#* @param .year The year of interest (1961 - 2018)
+#* @param .product The crop of interest. One of wheat, rice, maize, soybeans, potatoes, beans, peas, cassava, barley, cocoa beans, or bananas.
+#* @param .entity The country of interest.
+#* @get /crop-yield
+
+function(.year, .product, .entity) {
+ filter(crop_yields,
+        year == .year,
+        product == .product,
+        entity == .entity)
+}
+```
+---
+# The API
+```r
+library(plumber)
+library(tidyverse)
+
+crop_yields &lt;- read_csv("data/crop_yields.csv") 
+
+*#* @apiTitle Crop Yields API 
+#* Return crop yields for a given product, year, and entity.
+#* @param .year The year of interest (1961 - 2018)
+#* @param .product The crop of interest. One of wheat, rice, maize, soybeans, potatoes, beans, peas, cassava, barley, cocoa beans, or bananas.
+#* @param .entity The country of interest.
+#* @get /crop-yield
+
+function(.year, .product, .entity) {
+ filter(crop_yields,
+        year == .year,
+        product == .product,
+        entity == .entity)
+}
+
+```
+---
+# The API
+```r
+library(plumber)
+library(tidyverse)
+
+crop_yields &lt;- read_csv("data/crop_yields.csv") 
+
+#* @apiTitle Crop Yields API 
+*#* Return crop yields for a given product, year, and entity.
+#* @param .year The year of interest (1961 - 2018)
+#* @param .product The crop of interest. One of wheat, rice, maize, soybeans, potatoes, beans, peas, cassava, barley, cocoa beans, or bananas.
+#* @param .entity The country of interest.
+#* @get /crop-yield
+
+function(.year, .product, .entity) {
+ filter(crop_yields,
+        year == .year,
+        product == .product,
+        entity == .entity)
+}
+
+```
+---
+# The API
+```r
+library(plumber)
+library(tidyverse)
+
+crop_yields &lt;- read_csv("data/crop_yields.csv") 
+
+#* @apiTitle Crop Yields API 
+#* Return crop yields for a given product, year, and entity.
+*#* @param .year The year of interest (1961 - 2018)
+*#* @param .product The crop of interest. One of wheat, rice, maize, soybeans, potatoes, beans, peas, cassava, barley, cocoa beans, or bananas.
+*#* @param .entity The country of interest.
+#* @get /crop-yield
+
+function(.year, .product, .entity) {
+ filter(crop_yields,
+        year == .year,
+        product == .product,
+        entity == .entity)
+}
+
+```
+---
+# The API
+```r
+library(plumber)
+library(tidyverse)
+
+crop_yields &lt;- read_csv("data/crop_yields.csv") 
+
+#* @apiTitle Crop Yields API 
+#* Return crop yields for a given product, year, and entity.
+#* @param .year The year of interest (1961 - 2018)
+#* @param .product The crop of interest. One of wheat, rice, maize, soybeans, potatoes, beans, peas, cassava, barley, cocoa beans, or bananas.
+#* @param .entity The country of interest.
+*#* @get /crop-yield
+
+function(.year, .product, .entity) {
+ filter(crop_yields,
+        year == .year,
+        product == .product,
+        entity == .entity)
+}
+
+```
+---
+class: inverse, center, middle
+# The Swagger Interface
+---
+# Swagger
+&lt;img src="slides_files/swagger.png" width="100%" style="display: block; margin: auto;" /&gt;
+---
+class: inverse, center, middle
+# Calling the API from R {httr}
+---
+# API Call Steps:
+
+* This pattern is the same for all languages
+
+* Generate the query URL
+
+* Make the request 
+
+* Parse the response 
+---
+# Creating the URL
+
+1. Specify the base URL  
+
+2. Create named list with parameters and values  
+
+3. Use modify_url() to fill in parameters  
+
+
+```r
+library(httr)
+b_url &lt;- 
+ "https://colorado.rstudio.com/rsc/crop-yield-api/crop-yield"
+
+params &lt;- list(.year = 1975, 
+               .product = "beans", 
+               .entity = "germany")
+
+* (query_url &lt;- modify_url(url = b_url, query = params)) 
+```
+`[1] "https://colorado.rstudio.com/rsc/crop-yield-api/crop-yield?.year=1975&amp;.product=beans&amp;.entity=germany"`
+---
+# Send the request
+
+* Use the appropriate method  
+
+  * e.g. `GET()`, `POST()`, `PUT()`
+
+&lt;span style="background-color:#fff2cc"&gt;`(res &lt;- GET(query_url))`&lt;/span&gt;
+
+`## Response` 
+
+`[https://colorado.rstudio.com/rsc/crop-yield-api/crop-yield?.year=1975&amp;.product=beans&amp;.entity=germany]`
+
+`##   Date: 2020-11-08 20:34`  
+`##   Status: 200`  
+`##   Content-Type: application/json`  
+`##   Size: 72 B`
+---
+# Parse the request
+
+```r
+
+*(resp_raw &lt;- content(res, as = "text"))
+
+
+"[{\"entity\":\"germany\",\"year\":1975,\"product\":\"beans\",\"crop_yield\":2.8749}]" 
+
+*jsonlite::fromJSON(resp_raw)
+
+
+##    entity year product crop_yield
+## 1 germany 1975   beans     2.8749
+```
+---
+class: inverse, middle, center
+# Recap
+---
+# Recap
+
+* APIs: computers talking to computers
+ 
+* RESTful APIs use HTTP
+ 
+* HTTP is language agnostic
+ 
+* Add APIs to your DS toolbox
+ 
+* Reduce communication barriers
+ 
+* Enable programmatic use of tools
+
+---
+class: inverse, middle, center
+# Thank you!
+---
+class: inverse, middle, center
+# Let's talk about it.
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
