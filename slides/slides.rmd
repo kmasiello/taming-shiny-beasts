@@ -162,7 +162,7 @@ class: inverse, center, middle
 * Think of HTTP as a universal language
 
 ---
-# Think of APIs as a way to access a function
+# Think of APIs as a way to access functions
 General form of an API: 
 ```
 http://hostname/api_endpoint/?parameter=value
@@ -185,47 +185,31 @@ http://hostname/my_function/?argument=value
 
 .center[<img src="slides_files/dockingstation.png" height = 325>] 
   
-.center[<img src="slides_files/dockingstationDescription.png" width = 300%> ]
+.center[<img src="slides_files/dockingstationDescription.png" width = 1000> ]
 
 ---
-# Data Science Tool Box
+# The Case for APIs
 
-* PDF reports
+Traditional Data Science Tool Box
 
-* PowerPoint presentations
+* Reports
+
+* Presentations
 
 * Spreadsheets
 
 * Interactive Dashboards
 
-* *etc.*
-
-* Limited to end user consumption
-
----
-# Data Science Tool Box
-
-* PDF reports
-
-* PowerPoint presentations
-
-* Spreadsheets
-
-* Interactive Dashboards
-
-* *etc.*
-
-* **~APIs~**
+* *all limited to end user consuption*
+  
+Extend your reach with APIs!
 
 ---
-class: inverse, center, middle
+# The Case for APIs
+.pull-left[
+### Organizational
 
-# Why an API?
-
----
-# Organizational
-
-* Smaller pieces are easier to manage (less code!)
+* Smaller pieces are easier to manage
 
 * Component Monitoring 
 
@@ -234,47 +218,35 @@ class: inverse, center, middle
 * Less technical debt! 
 
 * Better change management
-  * Upgrade one service at a time without bringing down whole application
 
----
-# Collaborative
+* Upgrade one service at a time without bringing down whole application
 
-* Less friction in tool handoff 
+]
+
+.pull-right[
+### Collaborative
+
+* Less friction and effort in tool handoff 
 
 * Empower teams to use preferred tool chain
 
 * Concerned about API requests not software language
 
-* Reduced effort in tool hand off
+* No need to translate work
 
-  * No need to translate work
-  
-  * Not blocked by communication
+* Programmatic use of services
 
-* Programmatic use of services by other teams
-
-  * Whereas dashboards require user intervention
-
-* **_Glue together API requests! Pipelines, baby!_** 
-
+* *Glue together API requests! Pipelines, baby!* 
+]
 ---
-# Signs you might be ready to create an API
 
-* Redundant code (copying and pasting/reusing)
 
-* Other teams want your code
-
-* Other teams may not know your language
-
-* You want to integrate different software into one toolchain
-
----
 class: inverse, center, middle
 
 # How do you build an API?
 
 ---
-# API frameworks?
+# API frameworks
 
 * R - plumber
 
