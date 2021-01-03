@@ -12,8 +12,7 @@ function() {
 #* Toss a multiple times and summarize output
 #* @param n the number of times to toss the coin
 #* @get /multi_toss
-#* @serializer rds
 
 function(n) {
-  table(sample(c("heads", "tails"), n, prob = c(0.5, 0.5), replace = TRUE))
+  as.data.frame(table(sample(c("heads", "tails"), n, prob = c(0.5, 0.5), replace = TRUE)))
 }
