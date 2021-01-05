@@ -1,0 +1,34 @@
+---
+title: "call_api"
+author: "Katie Masiello"
+date: "1/2/2021"
+output: html_document
+---
+```{r}
+library(httr)
+```
+
+See the published API at: <https://colorado.rstudio.com/rsc/coin_api/>
+
+## Endpoint 1: single coin toss
+
+open this link in a browser tab: <https://colorado.rstudio.com/rsc/coin_api/coin_toss>
+
+refresh the browser and see the results
+
+or pull it into code with the `httr` package
+```{r}
+(result <- GET("https://colorado.rstudio.com/rsc/coin_api/coin_toss") %>% 
+   content(as = "text") %>% jsonlite::fromJSON())
+
+```
+
+## Endpoint 2: multi coin toss
+
+Similarly, use `httr` to call the multi toss endpoint
+
+```{r}
+
+(response <- GET("https://colorado.rstudio.com/rsc/coin_api/multi_toss?n=35") %>% 
+   content(as = "text") %>% jsonlite::fromJSON())
+```
