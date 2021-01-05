@@ -113,13 +113,13 @@ class: inverse
 
 .right-column[
 <br>
-###1. Write a  &nbsp; <img src="slides_files/pkg.png" height="90" style="vertical-align:middle">
+###1. Smart data refresh (e.g. &nbsp;<img src="slides_files/pins.png" height="90" style="vertical-align:middle">)
 
-###2. APIs &nbsp;<img src="slides_files/plumber_small.png" height="90" style="vertical-align:middle">
+###2. Write a  &nbsp; <img src="slides_files/pkg.png" height="90" style="vertical-align:middle">
 
-###3. Use &nbsp; <img src="slides_files/shiny.png" height="90" style="vertical-align:middle">&nbsp; modules
+###3. APIs &nbsp;<img src="slides_files/plumber_small.png" height="90" style="vertical-align:middle">
 
-###4. Write an &nbsp; <img src="slides_files/R6.png" height="90" style="vertical-align:middle">&nbsp; Class 
+###4. Use &nbsp; <img src="slides_files/shiny.png" height="90" style="vertical-align:middle">&nbsp; modules
 
 ]
 ---
