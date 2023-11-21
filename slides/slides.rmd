@@ -420,7 +420,7 @@ my_fun("Hello!")
 # What is changing?
 
 * Things that change should be arguments  
-```{r, echo=FALSE}
+```{r, echo=FALSE, eval=FALSE}
 decorate("filter(crop_yields, 
          year == 2018, 
          product == \"maize\", 
@@ -432,7 +432,7 @@ decorate("filter(crop_yields,
 ```
 
 * Making the skeleton  
-```{r echo=FALSE}
+```{r echo=FALSE, eval=FALSE}
 decorate("filter_yields <- function(.year, .product, .entity) {
 	 # This is where our filtering will go! 
 }", eval=FALSE) %>% 
